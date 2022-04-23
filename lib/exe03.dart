@@ -41,7 +41,6 @@ class myBody extends StatelessWidget {
 }
 
 class Imc extends StatefulWidget {
-
   @override
   State<Imc> createState() => _ImcState();
 }
@@ -49,20 +48,40 @@ class Imc extends StatefulWidget {
 class _ImcState extends State<Imc> {
   final _heightController = TextEditingController();
   final _weightController = TextEditingController();
+  double _result = 0.0;
+  Color _status = Colors.white;
 
-  double _calculate(){
+  void _calculate(){
     double height = double.parse(_heightController.text);
     double weight = double.parse(_weightController.text); 
     double imc;
-
+    Color status;
     if(height < 0 && weight < 0){
-      return 0;
+      return;
     }
 
-
     imc =  (weight / pow(height, 2));
-    print(imc);
-    return imc;
+    String imcF= imc.toStringAsFixed(2);
+
+    if (imc < 18.5){
+      status = Colors.blue;
+    }else if (imc >= 18.5 && imc < 25){
+      status = Colors.green;
+    }else if (imc >= 25 && imc < 30){
+      status = Colors.yellow;
+    }else if (imc >= 30 && imc < 35){
+      status = Colors.yellowAccent;
+    }else if (imc >= 35 && imc < 40){
+      status = Colors.orange;
+    }else{
+      status = Colors.red;
+    }
+
+    setState(() {
+      _result = double.parse(imcF);
+      _status = status;
+    });
+  
   }
 
   @override
@@ -97,13 +116,20 @@ class _ImcState extends State<Imc> {
             ),
           ),
           Center(
-            child: Text('Como mostrar o resultado?'),
+            child: Container(
+              color: _status,
+              child: Text(
+                'IMC: $_result',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold
+                ),
+
+              ),
+            )
           )
         ],
       ),
     );
   }
 }
-
-}
-
