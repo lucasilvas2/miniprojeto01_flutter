@@ -50,12 +50,14 @@ class _ImcState extends State<Imc> {
   final _weightController = TextEditingController();
   double _result = 0.0;
   Color _status = Colors.white;
+  Image _image =  Image.asset('assets/images/00.png');
 
   void _calculate(){
     double height = double.parse(_heightController.text);
     double weight = double.parse(_weightController.text); 
     double imc;
     Color status;
+    Image image;
     if(height < 0 && weight < 0){
       return;
     }
@@ -65,21 +67,28 @@ class _ImcState extends State<Imc> {
 
     if (imc < 18.5){
       status = Colors.blue;
+      image = Image.asset('assets/images/01.png');
     }else if (imc >= 18.5 && imc < 25){
       status = Colors.green;
+      image = Image.asset('assets/images/02.png');
     }else if (imc >= 25 && imc < 30){
       status = Colors.yellow;
+      image = Image.asset('assets/images/03.png');
     }else if (imc >= 30 && imc < 35){
       status = Colors.yellowAccent;
+      image = Image.asset('assets/images/04.png');
     }else if (imc >= 35 && imc < 40){
       status = Colors.orange;
+      image = Image.asset('assets/images/05.png');
     }else{
       status = Colors.red;
+      image = Image.asset('assets/images/06.png');
     }
 
     setState(() {
       _result = double.parse(imcF);
       _status = status;
+      _image = image;
     });
   
   }
@@ -90,21 +99,21 @@ class _ImcState extends State<Imc> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          const Text('Height:'),
+          // const Text('Height:', style: TextStyle( fontSize: 20),),
           TextField(
             controller: _heightController,
-            decoration: const InputDecoration(
-              labelText: 'meters',
-              helperText: 'Ex.: 1.74'
+            decoration: const InputDecoration(             
+              labelText: 'Heigth:',
+              helperText: 'Ex.: 1.74 m'
             ), 
             keyboardType: TextInputType.number,
           ),
-          const Text('Weight:'),
+          // const Text('Weight:'),
           TextField(
             controller: _weightController,
             decoration: const InputDecoration(
-              labelText: 'kilogram',
-              helperText: 'Ex.: 80.00'          
+              labelText: 'Width:',
+              helperText: 'Ex.: 80.00 kg'          
             ),
             keyboardType: TextInputType.number,
           ),
@@ -124,9 +133,15 @@ class _ImcState extends State<Imc> {
                   fontSize: 25,
                   fontWeight: FontWeight.bold
                 ),
-
               ),
             )
+          ),
+          Center(
+            child: Container(
+              width: 100,
+              height: 200,
+              child: _image,
+            ),
           )
         ],
       ),
